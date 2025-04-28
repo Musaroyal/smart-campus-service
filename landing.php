@@ -59,7 +59,7 @@
 
     <!-- Bottom Section -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <a href="student.html" class="text-decoration-none text-dark">
+      <a href="student.php" class="text-decoration-none text-dark">
       <div class="bg-white p-6 rounded-2xl shadow text-center">
         <h4 class="text-xl font-semibold mb-2">Students</h4>
         <p class="text-gray-600">Book study rooms, check schedules</p>
