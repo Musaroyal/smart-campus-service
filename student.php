@@ -171,37 +171,42 @@
     content.classList.toggle('full-width');
   });
 
-  // Load content for different pages
-  function loadPage(page) {
-    let contentDiv = document.getElementById('content');
+ // Load content for different pages
+function loadPage(page) {
+  let contentDiv = document.getElementById('content');
 
-    if (page === 'timetable') {
-      fetch('timetable.php')
-        .then(response => response.text())
-        .then(data => {
-          contentDiv.innerHTML = data;  // Insert content from timetable.php
-        })
-        .catch(error => console.error('Error loading timetable:', error));
-    } else if (page === 'studyrooms') {
-      contentDiv.innerHTML = `
-        <h2>📖 Book Study Rooms</h2>
-        <p>Choose a study room and make a reservation below.</p>
-        <button class="btn btn-primary">Book Now</button>
-      `;
-    } else if (page === 'profile') {
-      fetch('profile.php')
-        .then(response => response.text())
-        .then(data => {
-          contentDiv.innerHTML = data;  // Insert profile.php content
-        })
-        .catch(error => console.error('Error loading profile:', error));
-    } else if (page === 'messages') {
-      contentDiv.innerHTML = `
-        <h2>💬 Messages</h2>
-        <p>You have no new messages.</p>
-      `;
-    }
+  if (page === 'timetable') {
+    fetch('timetable.php')
+      .then(response => response.text())
+      .then(data => {
+        contentDiv.innerHTML = data; // Insert content from timetable.php
+      })
+      .catch(error => console.error('Error loading timetable:', error));
+
+  } else if (page === 'studyrooms') {
+    fetch('study_room.php')
+      .then(response => response.text())
+      .then(data => {
+        contentDiv.innerHTML = data; // Insert content from study_room.php
+      })
+      .catch(error => console.error('Error loading study room:', error));
+
+  } else if (page === 'profile') {
+    fetch('profile.php')
+      .then(response => response.text())
+      .then(data => {
+        contentDiv.innerHTML = data; // Insert profile.php content
+      })
+      .catch(error => console.error('Error loading profile:', error));
+
+  } else if (page === 'messages') {
+    contentDiv.innerHTML = `
+      <h2>💬 Messages</h2>
+      <p>You have no new messages.</p>
+    `;
   }
+}
+
 </script>
 
 
