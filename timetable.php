@@ -1,19 +1,5 @@
 <?php
 // Sample timetable data
-$dailyClasses = [
-    'Monday' => [
-        ['time' => '9:00 AM - 10:00 AM', 'subject' => 'Math', 'location' => 'Room 101'],
-        ['time' => '10:15 AM - 11:15 AM', 'subject' => 'Physics', 'location' => 'Room 102'],
-    ],
-    'Tuesday' => [
-        ['time' => '9:00 AM - 10:00 AM', 'subject' => 'History', 'location' => 'Room 103'],
-        ['time' => '10:15 AM - 11:15 AM', 'subject' => 'Biology', 'location' => 'Room 104'],
-    ],
-    // Add more days as needed...
-];
-
-$weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
-
 // Logic to switch between daily and weekly views
 $view = isset($_GET['view']) ? $_GET['view'] : 'daily';
 $currentDay = isset($_GET['day']) ? $_GET['day'] : 'Monday';
@@ -27,64 +13,66 @@ $currentDay = isset($_GET['day']) ? $_GET['day'] : 'Monday';
     <title>Timetable</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
 
-<div class="container mt-5">
-    <header class="text-center mb-4">
-        <h1>Student Timetable</h1>
-        <div class="btn-group" role="group">
-            <a href="?view=daily&day=Monday" class="btn btn-primary">Daily View</a>
-            <a href="?view=weekly" class="btn btn-secondary">Weekly View</a>
-        </div>
-    </header>
+<div class="row text-center">
+  <!-- Class Timetable Block -->
+  <div class="col-md-4 mb-4">
+    <div onclick="loadPDF('uploads/classTimetable.pdf')" class="card text-white" style="background-color: #0d47a1; height: 150px; cursor: pointer;">
+      <div class="card-body d-flex flex-column justify-content-center">
+        <div class="mb-2" style="font-size: 30px;">📚</div>
+        <h5 class="card-title">Class Timetable</h5>
+      </div>
+    </div>
+  </div>
 
-    <?php if ($view === 'daily') : ?>
-        <div class="daily-view">
-            <div class="mb-4">
-                <h3>Schedule for <?= $currentDay; ?></h3>
-            </div>
-            <div class="list-group">
-                <?php foreach ($dailyClasses[$currentDay] as $class) : ?>
-                    <div class="list-group-item d-flex justify-content-between align-items-center">
-                        <div class="class-time"><?= $class['time']; ?></div>
-                        <div class="class-info">
-                            <h5 class="mb-1"><?= $class['subject']; ?></h5>
-                            <p class="mb-0"><?= $class['location']; ?></p>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    <?php elseif ($view === 'weekly') : ?>
-        <div class="weekly-view">
-            <div class="row">
-                <?php foreach ($weekDays as $day) : ?>
-                    <div class="col-md-2">
-                        <div class="border p-3">
-                            <h5 class="text-center"><?= $day; ?></h5>
-                            <?php if (isset($dailyClasses[$day])): ?>
-                                <?php foreach ($dailyClasses[$day] as $class) : ?>
-                                    <div class="mb-3">
-                                        <div class="fw-bold"><?= $class['time']; ?></div>
-                                        <div><?= $class['subject']; ?></div>
-                                        <div class="small text-muted"><?= $class['location']; ?></div>
-                                    </div>
-                                <?php endforeach; ?>
-                            <?php else : ?>
-                                <div>No classes scheduled</div>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    <?php endif; ?>
+  <!-- Semester Test Timetable Block -->
+  <div class="col-md-4 mb-4">
+    <div onclick="loadPDF('uploads/semesterTest.pdf')" class="card text-white" style="background-color: #2196f3; height: 150px; cursor: pointer;">
+      <div class="card-body d-flex flex-column justify-content-center">
+        <div class="mb-2" style="font-size: 30px;">📝</div>
+        <h5 class="card-title">Semester Test Timetable</h5>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exam Timetable Block -->
+  <div class="col-md-4 mb-4">
+    <div onclick="loadPDF('uploads/examTimetable.pdf')" class="card text-white" style="background-color: #64b5f6; height: 150px; cursor: pointer;">
+      <div class="card-body d-flex flex-column justify-content-center">
+        <div class="mb-2" style="font-size: 30px;">🎓</div>
+        <h5 class="card-title">Exam Timetable</h5>
+      </div>
+    </div>
+  </div>
 </div>
 
+<div class="mt-5">
+  <div class="card">
+    <div class="card-header text-center">
+      <h4>📄 Timetable Preview</h4>
+    </div>
+    <div class="card-body">
+      <iframe id="pdfViewer" src="" frameborder="0" width="100%" height="600px"></iframe>
+    </div>
+  </div>
+</div>
+
+
+
 <!-- Bootstrap JS and dependencies -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
 
 </body>
+
+<script>
+  function loadPDF(pdfPath) {
+    const pdfViewer = document.getElementById('pdfViewer');
+    pdfViewer.src = pdfPath;
+  }
+</script>
+
 </html>

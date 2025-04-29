@@ -70,7 +70,7 @@
 
     /* Content area */
     #content {
-  margin-left: 350px; /* Sidebar width */
+  /* margin-left: 350px; Sidebar width */
   width: calc(100% - 350px); /* Adjust content width to the remaining space */
   padding: 20px;
   padding-top: 100px;

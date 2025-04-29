@@ -1,34 +1,3 @@
-<?php
-// study_room.php
-session_start();
-include('db_connection.php'); // Include your database connection
-
-// Fetch available rooms
-$query = "SELECT * FROM study_rooms WHERE availability = 'Available'";
-$result = mysqli_query($conn, $query);
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // When a student books a room
-    $student_id = $_SESSION['student_id']; // Assuming the student's ID is stored in the session
-    $room_id = $_POST['room_id'];
-    $booking_date = $_POST['booking_date'];
-    $time_slot = $_POST['time_slot'];
-
-    // Insert the booking into the bookings table
-    $insert_query = "INSERT INTO bookings (student_id, room_id, booking_date, time_slot) 
-                     VALUES ('$student_id', '$room_id', '$booking_date', '$time_slot')";
-
-    if (mysqli_query($conn, $insert_query)) {
-        // Update the room's availability to "Booked"
-        $update_query = "UPDATE study_rooms SET availability = 'Booked' WHERE id = '$room_id'";
-        mysqli_query($conn, $update_query);
-
-        echo "Room booked successfully!";
-    } else {
-        echo "Error: " . mysqli_error($conn);
-    }
-}
-?>
 
 <!DOCTYPE html>
 <html lang="en">
