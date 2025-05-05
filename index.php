@@ -1,6 +1,17 @@
-<?php 
-// This could be a session check to ensure the user is logged in
-session_start(); 
+<?php
+session_start();
+
+
+// Include database configuration to handle avatar uploads
+require 'config.php';
+
+// Get user info from the database
+$stmt = $conn->prepare("SELECT * FROM users_db WHERE id = ?");
+$stmt->execute([$_SESSION['name']]);
+$user = $stmt->fetch();
+
+// Set the default page (home page) based on GET parameter
+$page = isset($_GET['page']) ? $_GET['page'] : 'home';
 ?>
 
 <!DOCTYPE html>
@@ -9,17 +20,15 @@ session_start();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Campus Portal</title>
-  <!-- Link to Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    /* Custom styles */
     .sidebar {
       height: 100vh;
       position: fixed;
       top: 0;
       left: 0;
       width: 250px;
-      background-color: #333;
+      background-color: rgb(122, 130, 234);
       color: white;
       padding-top: 20px;
     }
@@ -30,11 +39,17 @@ session_start();
       display: block;
     }
     .sidebar a:hover {
-      background-color: #575757;
+      background-color:rgb(33, 45, 208);
     }
     .content-area {
       margin-left: 260px;
       padding: 20px;
+    }
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
     }
   </style>
 </head>
@@ -43,42 +58,42 @@ session_start();
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="text-center">
-      <h4 class="text-white">Hello, <?php echo $_SESSION['student_name']; ?></h4>
-      <p class="text-white"><?php echo $_SESSION['student_no']; ?> - <?php echo $_SESSION['course']; ?></p>
+      <!-- Display user profile info -->
+      <h4 class="text-white"><?php echo $_SESSION['email']; ?></h4>
+   
+
+      <!-- Form to upload avatar -->
+      
     </div>
-    <a href="#" id="timetable-link">Timetable</a>
-    <a href="#" id="profile-link">Profile</a>
-    <a href="#" id="messages-link">Messages</a>
+    <a href="?page=timetable">Timetable</a>
+    <a href="?page=booking">Booking</a>
+    <a href="?page=announcements">Announcements</a>
     <a href="logout.php">Logout</a>
   </div>
 
   <!-- Content Area -->
   <div class="content-area" id="content-area">
-    <!-- Dynamic content will be loaded here -->
-    <h1>Welcome to the Smart Campus Portal</h1>
-    <p>Click on the sidebar items to view your timetable, profile, and messages.</p>
+    <?php
+      // Include different content based on the selected page
+      switch ($page) {
+          case 'timetable':
+              include 'timetable.php';
+              break;
+          case 'booking':
+              include 'booking.php';
+              break;
+          case 'announcements':
+              include 'announcements.php';
+              break;
+          default:
+              echo '<h1>Welcome to the Smart Campus Portal</h1>';
+              echo '<p>Click on the sidebar items to view your timetable, booking, and announcements.</p>';
+              break;
+      }
+    ?>
   </div>
 
-  <!-- Bootstrap JS and jQuery -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-  <script>
-    // JavaScript to dynamically load content from PHP files
-    $(document).ready(function() {
-      $('#timetable-link').click(function() {
-        $('#content-area').load('timetable.php');
-      });
-
-      $('#profile-link').click(function() {
-        $('#content-area').load('profile.php');
-      });
-
-      $('#messages-link').click(function() {
-        $('#content-area').load('messages.php');
-      });
-    });
-  </script>
-  
 </body>
 </html>

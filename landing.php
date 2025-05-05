@@ -12,8 +12,8 @@
   <nav class="bg-white shadow-md py-4 px-6 flex justify-between items-center">
     <div class="text-xl font-bold text-blue-700">Smart Campus Portal</div>
     <div class="space-x-4">
-      <a href="#" class="bg-transparent border border-blue-600 text-blue-600 px-4 py-2 rounded-full hover:bg-blue-50 transition">Login</a>
-      <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition">Sign Up</a>
+      <a href="login.php" class="bg-transparent border border-blue-600 text-blue-600 px-4 py-2 rounded-full hover:bg-blue-50 transition">Login</a>
+      <a href="signup.php" class="bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition">Sign Up</a>
     </div>
   </nav>
 
