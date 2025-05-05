@@ -1,10 +1,16 @@
 <?php
 session_start();
 require 'config.php';
+$_SESSION['student_no'] = $student_no_from_db;
+$_SESSION['name'] = $name_from_db;
+$_SESSION['course_name'] = $course_name_from_db;
+$_SESSION['course_code'] = $course_code_from_db;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $password = $_POST["password"];
+    $student_no = $_POST["student_no"];
+    
 
     $stmt = $conn->prepare("SELECT * FROM users_db WHERE email = ?");
     $stmt->execute([$email]);

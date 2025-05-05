@@ -4,6 +4,9 @@ require 'config.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST["name"];
     $email = $_POST["email"];
+    $student_no = $_POST["student_no"];
+    $course_name = $_POST["course_name"];
+    $course_code = $_POST["course_code"];
     $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
     $stmt = $conn->prepare("SELECT * FROM users_db WHERE email = ?");
@@ -12,8 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($stmt->rowCount() > 0) {
         $error = "Email already registered.";
     } else {
-        $stmt = $conn->prepare("INSERT INTO users_db (name, email, password) VALUES (?, ?, ?)");
-        if ($stmt->execute([$name, $email, $password])) {
+        $stmt = $conn->prepare("INSERT INTO users_db (name, email, student_no, course_name, course_code,  password) VALUES (?, ?, ?, ?, ?, ?)");
+        if ($stmt->execute([$name, $email,$student_no, $course_name, $course_code, $password])) {
             $success = "Signup successful. <a href='login.php'>Login here</a>";
         } else {
             $error = "Something went wrong.";
@@ -112,7 +115,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <form method="POST" action="">
         <input type="text" name="name" placeholder="Full Name" required><br>
         <input type="email" name="email" placeholder="Email" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
+        <input type="text" name="password" placeholder="Password" required><br>
+        <input type="text" name="student_no" placeholder="Student Number" required><br>
+        <input type="text" name="course_name" placeholder="Qualification Name" required><br>
+        <input type="text" name="course_code" placeholder="Course Code" required><br>
+        
         <button type="submit">Sign Up</button>
     </form>
     <div class="login-link">
