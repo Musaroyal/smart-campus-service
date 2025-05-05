@@ -44,12 +44,28 @@
       </div>
     </div>
 
-    <!-- Bottom Section -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+ <!-- Bottom Section -->
+ <!-- <div class="row g-4">
+  <div class="col-md-4">
+    <a href="student.html" class="text-decoration-none text-dark">
+      <div class="card text-center p-4">
+        <h5 class="card-title">Students</h5>
+        <p class="text-muted">Book study rooms, check schedules</p>
+      </div>
+    </a>
+  </div>
+</div>   -->
+
+
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <a href="student.php" class="text-decoration-none text-dark">
       <div class="bg-white p-6 rounded-2xl shadow text-center">
         <h4 class="text-xl font-semibold mb-2">Students</h4>
         <p class="text-gray-600">Book study rooms, check schedules</p>
       </div>
+    </a>
+
+
       <div class="bg-white p-6 rounded-2xl shadow text-center">
         <h4 class="text-xl font-semibold mb-2">Lecturers</h4>
         <p class="text-gray-600">Upload class timetables, reserve halls</p>
@@ -58,7 +74,8 @@
         <h4 class="text-xl font-semibold mb-2">Admin</h4>
         <p class="text-gray-600">Manage users, approve content, oversee bookings</p>
       </div>
-    </div>
+    </div> <!-- Bottom Section -->
+  
 
   </main>
 
