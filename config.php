@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$db   = 'smart_campus';
+$db   = 'smartcampus.db';
 $user = 'root';  // this is usually 'root' on XAMPP
 $pass = '';      // default is empty on XAMPP
 $charset = 'utf8mb4';

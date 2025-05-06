@@ -174,16 +174,24 @@
  // Load content for different pages
 function loadPage(page) {
   let contentDiv = document.getElementById('content');
-
   if (page === 'timetable') {
-    fetch('timetable.php')
-      .then(response => response.text())
-      .then(data => {
-        contentDiv.innerHTML = data; // Insert content from timetable.php
-      })
-      .catch(error => console.error('Error loading timetable:', error));
+  fetch('timetable.php')
+    .then(response => response.text())
+    .then(data => {
+      contentDiv.innerHTML = data;
 
-  } else if (page === 'studyrooms') {
+      // After timetable.php is loaded, attach loadPDF behavior manually
+      const pdfLinks = contentDiv.querySelectorAll('[data-pdf]');
+      pdfLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          const path = link.getAttribute('data-pdf');
+          loadPDF(path);
+        });
+      });
+    })
+    .catch(error => console.error('Error loading timetable:', error));
+}
+else if (page === 'studyrooms') {
     fetch('study_room.php')
       .then(response => response.text())
       .then(data => {
@@ -206,6 +214,17 @@ function loadPage(page) {
     `;
   }
 }
+
+
+function loadPDF(pdfPath) {
+  const pdfViewer = document.getElementById('pdfViewer');
+  pdfViewer.src = pdfPath;
+
+  const downloadBtn = document.getElementById('downloadBtn');
+  downloadBtn.href = pdfPath;
+  downloadBtn.style.display = 'inline-block';
+}
+
 
 </script>
 
