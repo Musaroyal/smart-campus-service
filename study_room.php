@@ -70,38 +70,63 @@ $result = mysqli_query($conn, $sql);
     </div>
   </section>
 
-  <!-- Search Form -->
-  <div class="container search-box">
-    <form class="row g-3 align-items-end">
-      
-      <div class="col-md-3">
-        <label class="form-label">Campus or Building</label>
-        <input type="text" class="form-control" placeholder="e.g. Main Library" name="location">
-      </div>
+<!-- Search Form -->
+<div class="container search-box">
+  <form class="row g-3 align-items-end">
 
-      <div class="col-md-3">
-        <label class="form-label">Select Date</label>
-        <input type="date" class="form-control" name="date">
-      </div>
+    <!-- Campus or Building Dropdown -->
+    <div class="col-md-3">
+      <label class="form-label">Campus or Building</label>
+      <select class="form-select" name="location" id="locationDropdown" onchange="toggleOtherField()">
+        <optgroup label="Study Rooms">
+          <option value="Building 6">Building 6</option>
+          <option value="Building 5">Building 5</option>
+          <option value="Building 4">Building 4</option>
+          <option value="Building 8">Building 8</option>
+        </optgroup>
+        <optgroup label="Labs">
+          <option value="15G01">15G01</option>
+          <option value="15G30">15G30</option>
+          <option value="16G01">16G01</option>
+          <option value="Other">Other</option>
+        </optgroup>
+      </select>
+    </div>
 
-      <div class="col-md-2">
-        <label class="form-label">Time Slot</label>
-        <input type="text" class="form-control" placeholder="10:00 - 12:00" name="time_slot">
-      </div>
+    <!-- Other Field (Hidden unless "Other" selected) -->
+    <div class="col-md-3" id="otherLocationField" style="display: none;">
+      <label class="form-label">Specify Other</label>
+      <input type="text" class="form-control" name="other_location" placeholder="Specify location">
+    </div>
 
-      <div class="col-md-2">
-        <label class="form-label">Group Size</label>
-        <input type="number" class="form-control" min="1" value="1" name="group_size">
-      </div>
+    <!-- Select Date -->
+    <div class="col-md-2">
+      <label class="form-label">Select Date</label>
+      <input type="date" class="form-control" name="date">
+    </div>
 
-      <div class="col-md-2 d-grid">
-        <button type="submit" class="btn btn-primary btn-circle">
-          <i class="fas fa-search"></i>
-        </button>
-      </div>
+    <!-- Time Slot -->
+    <div class="col-md-2">
+      <label class="form-label">Time Slot</label>
+      <input type="text" class="form-control" placeholder="10:00 - 12:00" name="time_slot">
+    </div>
 
-    </form>
-  </div>
+    <!-- Group Size -->
+    <div class="col-md-2">
+      <label class="form-label">Group Size</label>
+      <input type="number" class="form-control" min="1" value="1" name="group_size">
+    </div>
+
+    <!-- Submit Button -->
+    <div class="col-md-2 d-grid">
+      <button type="submit" class="btn btn-primary">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+
+  </form>
+</div>
+
 
   <div class="container mt-5">
     <h4>Available Rooms</h4>
@@ -111,6 +136,20 @@ $result = mysqli_query($conn, $sql);
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+  <script>
+  function toggleOtherField() {
+    var dropdown = document.getElementById("locationDropdown");
+    var otherField = document.getElementById("otherLocationField");
+    if (dropdown.value === "Other") {
+      otherField.style.display = "block";
+    } else {
+      otherField.style.display = "none";
+    }
+  }
+</script>
+
 </body>
 </html>
 
