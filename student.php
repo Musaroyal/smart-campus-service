@@ -155,10 +155,59 @@
 </nav>
 
 <!-- Main Content -->
-<div id="content">
+<!-- <div id="content">
   <h2>Welcome to your Dashboard</h2>
-  <!-- <p>This is your landing page. Your timetable will be displayed here.</p> -->
+<p>This is your landing page. Your timetable will be displayed here.</p> 
+</div> -->
+
+<!-- Main Content -->
+  <div id="content">
+    <h2 class="text-center mb-4">Welcome to your Dashboard</h2>
+
+    <!-- Reservation Table -->
+    <table class="table table-bordered table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Reservation Title</th>
+          <th scope="col">Date</th>
+          <th scope="col">Status</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Example row 1 -->
+        <tr>
+          <th scope="row">1</th>
+          <td>Consultation with Prof. Leroke</td>
+          <td>2025-05-15</td>
+          <td><span class="badge bg-success">Confirmed</span></td>
+          <td><a href="view_reservation.php?id=1" class="btn btn-primary btn-sm">View</a></td>
+        </tr>
+
+        <!-- Example row 2 -->
+        <tr>
+          <th scope="row">2</th>
+          <td>Revions class - 15G01</td>
+          <td>2025-05-18</td>
+          <td><span class="badge bg-warning text-dark">Pending</span></td>
+          <td><a href="view_reservation.php?id=2" class="btn btn-primary btn-sm">View</a></td>
+        </tr>
+
+        <!-- Example row 3 -->
+        <tr>
+          <th scope="row">3</th>
+          <td>Group Project Meeting - Building 6</td>
+          <td>2025-05-20</td>
+          <td><span class="badge bg-danger">Cancelled</span></td>
+          <td><a href="view_reservation.php?id=3" class="btn btn-primary btn-sm">View</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+
+
 
 <script>
   const toggleBtn = document.getElementById('toggle-btn');
@@ -231,3 +280,4 @@ function loadPDF(pdfPath) {
 
 </body>
 </html>
+

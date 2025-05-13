@@ -6,10 +6,42 @@ if (!$conn) {
     die('Connection failed: ' . mysqli_connect_error());
 }
 
-// Fetch available rooms
-$sql = "SELECT * FROM rooms";  // Adjust table name if needed
+// Initialize query
+$sql = "SELECT * FROM rooms";
+
+// Check if the form was submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $location = $_POST['location'];
+    $other_location = $_POST['other_location'] ?? '';
+    $final_location = ($location === 'Other') ? $other_location : $location;
+
+    $date = $_POST['date'];
+    $time_slot = $_POST['time_slot'];
+    $group_size = $_POST['group_size'];
+
+    // Build query with filters
+    $sql = "SELECT * FROM rooms WHERE location = '$final_location' AND date = '$date' AND time_slot = '$time_slot' AND group_size >= $group_size AND booked = 0";
+}
+
+// Execute query
 $result = mysqli_query($conn, $sql);
+
+$message = "";
+$messageType = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (mysqli_num_rows($result) === 0) {
+        $message = "No available rooms found for the selected criteria. The room may be already booked or not available.";
+        $messageType = "warning";
+    } else {
+        $message = "Rooms found! Select one from the available options below.";
+        $messageType = "success";
+    }
+}
+
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -19,6 +51,7 @@ $result = mysqli_query($conn, $sql);
   <title>Study Room Booking</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <style>
     .hero {
         background: url('images/study_room.jpg') no-repeat center center;
@@ -72,7 +105,7 @@ $result = mysqli_query($conn, $sql);
 
 <!-- Search Form -->
 <div class="container search-box">
-  <form class="row g-3 align-items-end">
+<form class="row g-3 align-items-end" method="GET" action="reserve.php">
 
     <!-- Campus or Building Dropdown -->
     <div class="col-md-3">
@@ -89,7 +122,7 @@ $result = mysqli_query($conn, $sql);
           <option value="15G30">15G30</option>
           <option value="16G01">16G01</option>
           <option value="Other">Other</option>
-        </optgroup>
+        </optgroup>      
       </select>
     </div>
 
@@ -105,11 +138,14 @@ $result = mysqli_query($conn, $sql);
       <input type="date" class="form-control" name="date">
     </div>
 
-    <!-- Time Slot -->
-    <div class="col-md-2">
-      <label class="form-label">Time Slot</label>
-      <input type="text" class="form-control" placeholder="10:00 - 12:00" name="time_slot">
-    </div>
+ <div class="col-md-2">
+  <label class="form-label">Time Slot</label>
+  <div class="d-flex">
+    <input type="time" class="form-control me-1" id="startTime" onchange="updateTimeSlot()" />
+    <input type="time" class="form-control" id="endTime" onchange="updateTimeSlot()" />
+  </div>
+  <input type="hidden" name="time_slot" id="timeSlot" />
+</div>
 
     <!-- Group Size -->
     <div class="col-md-2">
@@ -128,14 +164,50 @@ $result = mysqli_query($conn, $sql);
 </div>
 
 
-  <div class="container mt-5">
-    <h4>Available Rooms</h4>
-    <div class="row" id="room-results">
-      <!-- PHP will load available study rooms here -->
-    </div>
-  </div>
+<h4>Available Rooms</h4>
+
+<?php if (!empty($message)): ?>
+  <div class="alert alert-<?php echo $messageType; ?>"><?php echo $message; ?></div>
+<?php endif; ?>
+
+
+<div class="row" id="room-results">
+<?php
+// <?php
+if (isset($result) && mysqli_num_rows($result) > 0) {
+    $rooms = [];
+
+    // Fetch all rows into an array
+    while ($row = mysqli_fetch_assoc($result)) {
+        $rooms[] = $row;
+    }
+
+    // Shuffle the array to randomize the order
+    shuffle($rooms);
+
+    // Take only the first 3 rooms
+    $rooms = array_slice($rooms, 0, 3);
+
+    // Display the selected rooms
+    foreach ($rooms as $row) {
+        echo '<div class="col-md-4 mb-3">';
+        echo '<div class="card">';
+        echo '<div class="card-body">';
+        echo '<h5 class="card-title">' . htmlspecialchars($row['location']) . '</h5>';
+        echo '<p class="card-text">Date: ' . $row['date'] . '</p>';
+        echo '<p class="card-text">Time Slot: ' . $row['time_slot'] . '</p>';
+        echo '<p class="card-text">Group Size: ' . $row['group_size'] . '</p>';
+        echo '<a href="reserve.php?id=' . $row['id'] . '" class="btn btn-primary btn-sm mt-2">Reserve</a>';
+
+        echo '</div></div></div>';
+    }
+}
+?>
+
+</div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>   
 
 
   <script>
@@ -148,6 +220,17 @@ $result = mysqli_query($conn, $sql);
       otherField.style.display = "none";
     }
   }
+
+  function updateTimeSlot() {
+    const start = document.getElementById("startTime").value;
+    const end = document.getElementById("endTime").value;
+    const timeSlot = document.getElementById("timeSlot");
+    if (start && end) {
+      timeSlot.value = `${start} - ${end}`;
+    }
+  }
+
+
 </script>
 
 </body>
